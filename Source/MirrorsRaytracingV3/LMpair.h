@@ -63,7 +63,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UArrowComponent* basis_x_arrow_component;
 
-	FMatrix irl_mirror_basis;// = FBasisVectorMatrix(EForceInit::ForceInitToZero);
+	FMatrix irl_mirror_basis;
 
 
 	// 1D mirror numbering has to be manual! No real better way to do it.

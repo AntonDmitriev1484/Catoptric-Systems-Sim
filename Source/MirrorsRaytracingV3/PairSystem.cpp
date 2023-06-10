@@ -118,14 +118,14 @@ void APairSystem::OnOverlapEnd(class AActor* OverlappedActor, class AActor* Othe
 }
 
 // Acquires pointers to all associated actor instances, LMpairs, TargetPoints, TargetImage
-// Sets up our pairs TArray
+// Anything within the PairSystem box will get bound into that instance
 void APairSystem::bindByLoc() {
 	TArray<ATargetP*> target_points;
 
 	DrawDebugBox(GetWorld(), GetActorLocation(), GetActorScale(), FColor::Purple);
 	FBox bounds = this->GetComponentsBoundingBox(true, false);
 	
-	//Whatever you parametrize the TActorITerator with will be the only data type it returns.
+	//Whatever you parametrize the TActorIterator with will be the only data type it returns.
 	//Had this as ALMpair earlier and, surprise, it only iterated over ALMpairs
 	for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 	{
@@ -344,7 +344,6 @@ void APairSystem::findConfiguration_1(const int threshold) {
 
 		changed_previous_rotator = rotateRandomMirror();
 
-		//Rotates them all away until its 0?
 		score = compare();
 		if (score < best_score) {
 			best_score = score;
@@ -408,13 +407,8 @@ TTuple<int, FVector> APairSystem::closestHitPoint() {
 // should be rotated to aim its light spot at the target
 void APairSystem::rotateMirrorTowardsTarget(int mirror_num, FVector hit_point) { //This should be the target point
 
-	//The mirrors that get rotated have their light direction rotated also?
-	//Really weird, this doesn't happen for stochastic
-	//It does actually!
-	//The line traces arent being rotated this way by my code
-	//but they get initialized this way when they are given some initila rotation in the preview
 
-	bool debug_lines = false;
+	bool debug_lines = false; // Set to true and uncomment to visualize the triangle math.
 	//debug_lines ? DrawDebugDirectionalArrow(GetWorld(), hit1_vector, hit2_vector, 10, FColor::Green) : false;
 
 	//Making a triangle a,b,c
@@ -456,6 +450,7 @@ void APairSystem::rotateMirrorTowardsTarget(int mirror_num, FVector hit_point) {
 
 // Exports current mirror config to a text file
 void APairSystem::exportConfiguration() {
+							// Replace this with your own absolute path
 	FString folder_path = "C:\\Users\\soula\\Documents\\Unreal Projects\\MirrorsRaytracingV3\\Content\\ConfigExportOutput";
 	FString file_name = this->GetActorLabel();
 	FString extension = "Config.txt";
